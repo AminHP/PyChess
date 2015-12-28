@@ -1,0 +1,56 @@
+#python imports
+from time import sleep
+from random import choice
+
+#project imports
+from worldmodel import WorldModel
+from connection import Connection
+from parser import Parser
+
+
+class Manager:
+    def __init__(self):
+        self.wm = WorldModel()
+        self.conn = Connection()
+
+
+    def init(self):
+        self.conn.start_server(5000)
+        while len(self.conn.clients) < 2:
+            sleep(1)
+        white_team_name = self.conn.recv(0, 32)
+        self.conn.send(0, b'white')
+        black_team_name = self.conn.recv(1, 32)
+        self.conn.send(1, b'black')
+        self.conn.set_all_timeouts(5)
+
+        self.wm.init(white_team_name, black_team_name)
+
+
+    def run(self):
+        turn = 1
+        while True:
+            is_white = bool(turn % 2)
+            moved = False
+            final_move = None
+
+            try:
+                data_bytes = self.conn.recv(0 if is_white else 1, 4)
+                if data_bytes:
+                    client_turn, move = Parser.decode(data_bytes)
+                    if client_turn == turn:
+                        if self.wm.check_move(move, is_white):
+                            moved = True
+                            final_move = move
+            except:
+                pass
+
+            if not moved:
+                print ('random move')
+                final_move = choice(self.wm.all_moves(is_white))
+
+            self.wm.do_move(final_move, is_white)
+            self.conn.send2all(Parser.encode(turn, final_move))
+            turn += 1
+            print (self.wm)
+
