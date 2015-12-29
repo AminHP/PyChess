@@ -4,7 +4,7 @@ import copy
 #project imports
 from worldmodel import WorldModel
 from connection import Connection
-from parser import Parser
+from myparser import Parser
 import ai
 
 

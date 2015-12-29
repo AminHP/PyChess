@@ -5,7 +5,7 @@ from random import choice
 #project imports
 from worldmodel import WorldModel
 from connection import Connection
-from parser import Parser
+from myparser import Parser
 
 
 class Manager:
