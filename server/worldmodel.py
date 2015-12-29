@@ -8,7 +8,7 @@ class WorldModel:
         self.board = [[Part(piece=Piece.none) for _ in range(8)] for _ in range(8)]
         self.white_team_name = ''
         self.black_team_name = ''
-
+        self.last_move_log = {"move":None, "removed_piece":None, "removed_piece_is_white":None}
 
     def __str__(self):
         res = ''
@@ -38,6 +38,7 @@ class WorldModel:
 
         self.white_team_name = white_name
         self.black_team_name = black_name
+
 
 
 
@@ -741,8 +742,13 @@ class WorldModel:
             for move in possible_moves:
                 if not (self.board[move.end[0]][move.end[1]].piece == Piece.king and self.board[move.end[0]][move.end[1]].is_white != is_white):
                     final.append(move)
-
-        return final
+        final_final = []
+        for move in final:
+            self.do_move (move, is_white)
+            if not self.is_check (is_white):
+                final_final.append(move)
+            self.undo_move()
+        return final_final
 
 
     def check_move(self, move, is_white):
@@ -755,11 +761,23 @@ class WorldModel:
     def do_move(self, move, is_white):
         sr, sc = move.start
         er, ec = move.end
+        self.last_move_log ["move"] = move
+        self.last_move_log ["removed_piece"] = self.board[er][ec].piece
+        self.last_move_log ["removed_piece_is_white"] = self.board[er][ec].is_white
         self.board[er][ec].piece = self.board[sr][sc].piece
         self.board[er][ec].is_white = self.board[sr][sc].is_white
         self.board[sr][sc].is_white = None
         self.board[sr][sc].piece = Piece.none
 
+    def undo_move (self):
+        sr, sc = self.last_move_log['move'].start
+        er, ec = self.last_move_log['move'].end
+        removed_piece = self.last_move_log['removed_piece']
+        removed_piece_is_white = self.last_move_log['removed_piece_is_white']
+        self.board[sr][sc].piece = self.board[er][ec].piece
+        self.board[sr][sc].is_white = self.board[er][ec].is_white
+        self.board[er][ec].piece = removed_piece
+        self.board[er][ec].is_white = removed_piece_is_white
 
     def is_check(self, is_white):
         for row in range(8):
