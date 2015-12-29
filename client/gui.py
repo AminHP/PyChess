@@ -11,7 +11,9 @@ from piece import Piece
 
 class GUI:
     def __init__ (self):
-        self.display_name = 'Chess'
+        self.display_name = 'Chess AI'
+        self.vertical_offset = 50
+        self.font = None
         self.screen  = None
 
 
@@ -21,7 +23,8 @@ class GUI:
         self.piece_len = self.monitor_width // 8
 
         pygame.init()
-        self.screen = pygame.display.set_mode((self.monitor_width, self.monitor_height))
+        self.font = pygame.font.SysFont('Arial', 25)
+        self.screen = pygame.display.set_mode((self.monitor_width, self.monitor_height + 2 * self.vertical_offset))
         pygame.display.set_caption(self.display_name)
 
         #loading images:
@@ -50,12 +53,13 @@ class GUI:
 
     def translate(self, row, col):
         x = col * self.piece_len
-        y = row * self.piece_len
+        y = row * self.piece_len + self.vertical_offset
         return x, y
 
 
 
     def reset_screen(self):
+        self.screen.fill((20, 20, 20))
         for row in range(8):
             for col in range(8):
                 if (row + col) % 2 == 1:
@@ -70,6 +74,13 @@ class GUI:
         self.screen.blit(pic, self.translate(row, col))
 
 
+    def display_team_names(self, name, top):
+        text_width, text_height = self.font.size(name)
+        if top < 0:
+            top += self.monitor_height + 2 * self.vertical_offset - text_height
+        self.screen.blit(self.font.render(name, 1, (255, 255, 255)), ((self.screen.get_width() // 2) - text_width / 2, top))
+
+
     def show(self, wm):
         self.reset_screen()
 
@@ -80,6 +91,9 @@ class GUI:
                     color = 'white' if part.is_white else 'black'
                     piece_num = part.piece.value - 1
                     self.draw_piece(self.pics[color][piece_num], row, col)
+
+        self.display_team_names(wm.black_team_name, 10)
+        self.display_team_names(wm.white_team_name, -10)
 
         #pygame.display.flip()
         pygame.display.update()
