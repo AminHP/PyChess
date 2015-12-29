@@ -227,7 +227,6 @@ class WorldModel:
                                     break
                                 else:
                                     break                                    
-                        if part.piece == Piece.bishop:
                             c = 1
                             while row_num - c >= 0 and col_num - c >= 0:
                                 if self.board [row_num-c][col_num-c].piece == Piece.none:
@@ -448,7 +447,6 @@ class WorldModel:
                                     break
                                 else:
                                     break                                    
-                        if part.piece == Piece.bishop:
                             c = 1
                             while row_num - c >= 0 and col_num - c >= 0:
                                 if self.board [row_num-c][col_num-c].piece == Piece.none:
