@@ -726,7 +726,7 @@ class WorldModel:
                                 for move in possible_moves:
                                     if move.end == (king_position[0]-num, king_position[1]-num):
                                         final.append(move)
-            if len (threats>1):
+            if len (threats)>1:
                 king_moves = self.get_king_moves (is_white)
                 for king_move in king_moves:
                     c = 0
