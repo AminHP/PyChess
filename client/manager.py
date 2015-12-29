@@ -1,9 +1,11 @@
 #python imports
+from time import sleep
 import copy
 
 #project imports
 from worldmodel import WorldModel
 from connection import Connection
+from gui import GUI
 from myparser import Parser
 import ai
 
@@ -12,6 +14,7 @@ class Manager:
     def __init__(self):
         self.wm = WorldModel()
         self.conn = Connection()
+        self.gui = GUI()
 
 
     def init(self):
@@ -31,6 +34,8 @@ class Manager:
 
         self.wm.init(white_team_name, black_team_name, int(my_color))
 
+        self.gui.init(512, 512)
+
 
     def run(self):
         turn = 1
@@ -49,6 +54,8 @@ class Manager:
             if t == turn:
                 self.wm.do_move(m, is_white)
 
+            self.gui.show(self.wm)
             turn += 1
-            print (self.wm)
+            #print (self.wm)
+            sleep(1)
 
