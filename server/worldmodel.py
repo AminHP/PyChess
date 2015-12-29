@@ -287,7 +287,6 @@ class WorldModel:
                                         moves.append (Move((row_num, col_num), (row_num+2, col_num)))
                             #rook
                             if part.piece == Piece.rook:
-                                print (row_num, col_num, 'black rook')
                                 c = 1
                                 while row_num - c >= 0:
                                     if self.board [row_num-c][col_num].piece == Piece.none:
@@ -616,24 +615,13 @@ class WorldModel:
                 if self.board[row][col].piece == Piece.king and self.board[row][col].is_white == is_white:
                     king_position = (row, col)
                     break
-        flag = False
         enemy_moves = self.all_moves (not self.board[king_position[0]][king_position[1]].is_white)
         for move in enemy_moves:
             if king_position == move.end:
-                flag = True
-                break
-        return flag
+                return True
+        return False
 
 
     def is_mate(self, is_white):
         return False
 
-
-
-c = WorldModel()
-c.init('white', 'black')
-c.do_move(Move((1, 0), (3, 0)), False)
-moves = c.all_moves(False)
-for i in moves:
-    print (i.start , " ->", i.end)
-print (len(moves))
