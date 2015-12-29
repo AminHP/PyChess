@@ -6,6 +6,7 @@ from random import choice
 from worldmodel import WorldModel
 from connection import Connection
 from myparser import Parser
+import config
 
 
 class Manager:
@@ -15,7 +16,7 @@ class Manager:
 
 
     def init(self):
-        self.conn.start_server()
+        self.conn.start_server(port=config.port)
         while len(self.conn.clients) < 2:
             sleep(1)
 
@@ -62,4 +63,13 @@ class Manager:
             turn += 1
             print (self.wm)
             sleep(1)
+
+            if self.wm.is_mate(True):
+                print ('White wins!')
+                break
+            elif self.wm.is_mate(False):
+                print ('Black wins!')
+                break
+
+        self.conn.disconnect()
 

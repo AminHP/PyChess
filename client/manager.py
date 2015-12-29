@@ -7,6 +7,7 @@ from worldmodel import WorldModel
 from connection import Connection
 from gui import GUI
 from myparser import Parser
+import config
 import ai
 
 
@@ -18,8 +19,9 @@ class Manager:
 
 
     def init(self):
-        self.conn.connect()
-        name = input('Enter your name: ')
+        self.conn.connect(host=config.host, port=config.port)
+        #name = input('Enter your name: ')
+        name = config.name
         self.conn.send(name.encode('UTF-8'))
 
         my_color = self.conn.recv(1).decode()
@@ -58,4 +60,13 @@ class Manager:
             turn += 1
             #print (self.wm)
             sleep(1)
+
+            if self.wm.is_mate(True):
+                print ('White wins!')
+                break
+            elif self.wm.is_mate(False):
+                print ('Black wins!')
+                break
+
+        self.conn.disconnect()
 
