@@ -523,7 +523,7 @@ class WorldModel:
                 part = self.board [row_num][col_num]
                 if part.piece != Piece.none:
                     #white
-                    if part.is_white and is_white:
+                    if part.is_white:
                         #king
                         if part.piece == Piece.king:
                             white_position = [row_num, col_num]
@@ -555,7 +555,7 @@ class WorldModel:
                                         white_king_moves.append ((row_num+1, col_num+1))
 
                     #black
-                    if not part.is_white and not is_white:
+                    if not part.is_white:
                         #king
                         if part.piece == Piece.king:
                             black_position = [row_num, col_num]
@@ -794,3 +794,29 @@ class WorldModel:
         if len(self.all_moves(is_white) ) == 0:
             return True
         return False
+
+
+
+c = WorldModel()
+c.init ('kia', 'amin')
+c.board = [[Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None)],
+
+           [Part(Piece.none, None), Part(Piece.king, True), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None)],
+
+           [Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None)],
+
+           [Part(Piece.none, None), Part(Piece.king,False), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None)],
+
+           [Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None)],
+
+           [Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None)],
+
+           [Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None)],
+
+           [Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None), Part(Piece.none, None)]]
+
+a = c.get_king_moves(False)
+
+
+for move in a:
+    print (move.start, move.end)
