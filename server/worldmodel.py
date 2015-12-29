@@ -66,7 +66,7 @@ class WorldModel:
                                     if self.board [row_num-1][col_num+1].piece != Piece.none and not self.board [row_num-1][col_num+1].is_white:
                                         moves.append (Move((row_num, col_num), (row_num-1, col_num+1)))
                             if row_num == 6:
-                                if self.board [row_num - 2][col_num].piece == Piece.none:
+                                if self.board [row_num - 1][col_num].piece == Piece.none and self.board [row_num - 2][col_num].piece == Piece.none:
                                     moves.append (Move((row_num, col_num), (row_num-2, col_num)))
                         #rook
                         if part.piece == Piece.rook:
@@ -285,7 +285,7 @@ class WorldModel:
                                         moves.append (Move((row_num, col_num), (row_num+1, col_num+1)))
                                     
                             if row_num == 1:
-                                if self.board [row_num + 2][col_num].piece == Piece.none:
+                                if self.board [row_num + 1][col_num].piece == Piece.none and self.board [row_num + 2][col_num].piece == Piece.none:
                                     moves.append (Move((row_num, col_num), (row_num+2, col_num)))
                         #rook
                         if part.piece == Piece.rook:
@@ -498,19 +498,19 @@ class WorldModel:
 
 
     def get_king_moves (self, is_white):
-        all_black_moves = self.get_not_king_moves(not is_white)
-        all_white_moves = self.get_not_king_moves(is_white)
-        def white_no_threat_form_not_kings_in (point):
+        all_enemy_moves = self.get_not_king_moves(not is_white)
+        all_my_moves = self.get_not_king_moves(is_white)
+        def am_i_safe_in (point):
             flag = True
-            for move in all_black_moves:
-                if point == move.end :
+            for move in all_enemy_moves:
+                if point == move.end and not (self.board[move.start[0]][move.start[1]].piece == Piece.pawn and move.start[1]-move.end[1] == 0) :
                     flag = False
                     break
             return flag
-        def black_no_threat_form_not_kings_in (point):
+        def is_enemy_safe_in (point):
             flag = True
-            for move in all_white_moves:
-                if point == move.end :
+            for move in all_my_moves:
+                if point == move.end and not (self.board[move.start[0]][move.start[1]].piece == Piece.pawn and move.start[1]-move.end[1] == 0):
                     flag = False
                     break
             return flag            
@@ -528,30 +528,30 @@ class WorldModel:
                         if part.piece == Piece.king:
                             white_position = [row_num, col_num]
                             if row_num > 0:
-                                if white_no_threat_form_not_kings_in ((row_num-1, col_num)) and self.board [row_num-1][col_num].piece == Piece.none or self.board [row_num-1][col_num].piece != Piece.none and not self.board [row_num-1][col_num].is_white:
+                                if am_i_safe_in ((row_num-1, col_num)) and self.board [row_num-1][col_num].piece == Piece.none or self.board [row_num-1][col_num].piece != Piece.none and not self.board [row_num-1][col_num].is_white:
                                     white_king_moves.append ((row_num-1, col_num))
                                 if col_num > 0:
-                                    if white_no_threat_form_not_kings_in ((row_num-1, col_num-1)) and self.board [row_num-1][col_num-1].piece == Piece.none or self.board [row_num-1][col_num-1].piece != Piece.none and not self.board [row_num-1][col_num-1].is_white:
+                                    if am_i_safe_in ((row_num-1, col_num-1)) and self.board [row_num-1][col_num-1].piece == Piece.none or self.board [row_num-1][col_num-1].piece != Piece.none and not self.board [row_num-1][col_num-1].is_white:
                                         white_king_moves.append ((row_num-1, col_num-1))
                                 if col_num < 7:
-                                    if white_no_threat_form_not_kings_in ((row_num-1, col_num+1)) and self.board [row_num-1][col_num+1].piece == Piece.none or self.board [row_num-1][col_num+1].piece != Piece.none and not self.board [row_num-1][col_num+1].is_white:
+                                    if am_i_safe_in ((row_num-1, col_num+1)) and self.board [row_num-1][col_num+1].piece == Piece.none or self.board [row_num-1][col_num+1].piece != Piece.none and not self.board [row_num-1][col_num+1].is_white:
                                         white_king_moves.append ((row_num-1, col_num+1))
                             if col_num > 0:
-                                if white_no_threat_form_not_kings_in ((row_num, col_num-1)) and self.board [row_num][col_num-1].piece == Piece.none or self.board [row_num][col_num-1].piece != Piece.none and not self.board [row_num][col_num-1].is_white:
+                                if am_i_safe_in ((row_num, col_num-1)) and self.board [row_num][col_num-1].piece == Piece.none or self.board [row_num][col_num-1].piece != Piece.none and not self.board [row_num][col_num-1].is_white:
                                     white_king_moves.append ((row_num, col_num-1))                                                                    
 
                             if col_num < 7:
-                                if white_no_threat_form_not_kings_in ((row_num, col_num+1)) and self.board [row_num][col_num+1].piece == Piece.none or self.board [row_num][col_num+1].piece != Piece.none and not self.board [row_num][col_num+1].is_white:
+                                if am_i_safe_in ((row_num, col_num+1)) and self.board [row_num][col_num+1].piece == Piece.none or self.board [row_num][col_num+1].piece != Piece.none and not self.board [row_num][col_num+1].is_white:
                                     white_king_moves.append ((row_num, col_num+1))
 
                             if row_num < 7:
-                                if white_no_threat_form_not_kings_in ((row_num+1, col_num)) and self.board [row_num+1][col_num].piece == Piece.none or self.board [row_num+1][col_num].piece != Piece.none and not self.board [row_num+1][col_num].is_white:
+                                if am_i_safe_in ((row_num+1, col_num)) and self.board [row_num+1][col_num].piece == Piece.none or self.board [row_num+1][col_num].piece != Piece.none and not self.board [row_num+1][col_num].is_white:
                                     white_king_moves.append ((row_num+1, col_num))
                                 if col_num > 0:
-                                    if white_no_threat_form_not_kings_in ((row_num+1, col_num-1)) and self.board [row_num+1][col_num-1].piece == Piece.none or self.board [row_num+1][col_num-1].piece != Piece.none and not self.board [row_num+1][col_num-1].is_white:
+                                    if am_i_safe_in ((row_num+1, col_num-1)) and self.board [row_num+1][col_num-1].piece == Piece.none or self.board [row_num+1][col_num-1].piece != Piece.none and not self.board [row_num+1][col_num-1].is_white:
                                         white_king_moves.append ((row_num+1, col_num-1))
                                 if col_num < 7:
-                                    if white_no_threat_form_not_kings_in ((row_num+1, col_num+1)) and self.board [row_num+1][col_num+1].piece == Piece.none or self.board [row_num+1][col_num+1].piece != Piece.none and not self.board [row_num+1][col_num+1].is_white:
+                                    if am_i_safe_in ((row_num+1, col_num+1)) and self.board [row_num+1][col_num+1].piece == Piece.none or self.board [row_num+1][col_num+1].piece != Piece.none and not self.board [row_num+1][col_num+1].is_white:
                                         white_king_moves.append ((row_num+1, col_num+1))
 
                     #black
@@ -560,30 +560,30 @@ class WorldModel:
                         if part.piece == Piece.king:
                             black_position = [row_num, col_num]
                             if row_num > 0:
-                                if black_no_threat_form_not_kings_in ((row_num-1, col_num)) and self.board [row_num-1][col_num].piece == Piece.none or self.board [row_num-1][col_num].piece != Piece.none and self.board [row_num-1][col_num].is_white:
+                                if is_enemy_safe_in ((row_num-1, col_num)) and self.board [row_num-1][col_num].piece == Piece.none or self.board [row_num-1][col_num].piece != Piece.none and self.board [row_num-1][col_num].is_white:
                                     black_king_moves.append ((row_num-1, col_num))
                                 if col_num > 0:
-                                    if black_no_threat_form_not_kings_in ((row_num-1, col_num-1)) and self.board [row_num-1][col_num-1].piece == Piece.none or self.board [row_num-1][col_num-1].piece != Piece.none and self.board [row_num-1][col_num-1].is_white:
+                                    if is_enemy_safe_in ((row_num-1, col_num-1)) and self.board [row_num-1][col_num-1].piece == Piece.none or self.board [row_num-1][col_num-1].piece != Piece.none and self.board [row_num-1][col_num-1].is_white:
                                         black_king_moves.append ((row_num-1, col_num-1))
                                 if col_num < 7:
-                                    if black_no_threat_form_not_kings_in ((row_num-1, col_num+1)) and self.board [row_num-1][col_num+1].piece == Piece.none or self.board [row_num-1][col_num+1].piece != Piece.none and self.board [row_num-1][col_num+1].is_white:
+                                    if is_enemy_safe_in ((row_num-1, col_num+1)) and self.board [row_num-1][col_num+1].piece == Piece.none or self.board [row_num-1][col_num+1].piece != Piece.none and self.board [row_num-1][col_num+1].is_white:
                                         black_king_moves.append ((row_num-1, col_num+1))
                             if col_num > 0:
-                                if black_no_threat_form_not_kings_in ((row_num, col_num-1)) and self.board [row_num][col_num-1].piece == Piece.none or self.board [row_num][col_num-1].piece != Piece.none and self.board [row_num][col_num-1].is_white:
+                                if is_enemy_safe_in ((row_num, col_num-1)) and self.board [row_num][col_num-1].piece == Piece.none or self.board [row_num][col_num-1].piece != Piece.none and self.board [row_num][col_num-1].is_white:
                                     black_king_moves.append ((row_num, col_num-1))                                                                    
 
                             if col_num < 7:
-                                if black_no_threat_form_not_kings_in ((row_num, col_num+1)) and self.board [row_num][col_num+1].piece == Piece.none or self.board [row_num][col_num+1].piece != Piece.none and self.board [row_num][col_num+1].is_white:
+                                if is_enemy_safe_in ((row_num, col_num+1)) and self.board [row_num][col_num+1].piece == Piece.none or self.board [row_num][col_num+1].piece != Piece.none and self.board [row_num][col_num+1].is_white:
                                     black_king_moves.append ((row_num, col_num+1))
 
                             if row_num < 7:
-                                if black_no_threat_form_not_kings_in ((row_num+1, col_num)) and self.board [row_num+1][col_num].piece == Piece.none or self.board [row_num+1][col_num].piece != Piece.none and self.board [row_num+1][col_num].is_white:
+                                if is_enemy_safe_in ((row_num+1, col_num)) and self.board [row_num+1][col_num].piece == Piece.none or self.board [row_num+1][col_num].piece != Piece.none and self.board [row_num+1][col_num].is_white:
                                     black_king_moves.append ((row_num+1, col_num))
                                 if col_num > 0:
-                                    if black_no_threat_form_not_kings_in ((row_num+1, col_num-1)) and self.board [row_num+1][col_num-1].piece == Piece.none or self.board [row_num+1][col_num-1].piece != Piece.none and self.board [row_num+1][col_num-1].is_white:
+                                    if is_enemy_safe_in ((row_num+1, col_num-1)) and self.board [row_num+1][col_num-1].piece == Piece.none or self.board [row_num+1][col_num-1].piece != Piece.none and self.board [row_num+1][col_num-1].is_white:
                                         black_king_moves.append ((row_num+1, col_num-1))
                                 if col_num < 7:
-                                    if black_no_threat_form_not_kings_in ((row_num+1, col_num+1)) and self.board [row_num+1][col_num+1].piece == Piece.none or self.board [row_num+1][col_num+1].piece != Piece.none and self.board [row_num+1][col_num-1].is_white:
+                                    if is_enemy_safe_in ((row_num+1, col_num+1)) and self.board [row_num+1][col_num+1].piece == Piece.none or self.board [row_num+1][col_num+1].piece != Piece.none and self.board [row_num+1][col_num-1].is_white:
                                         black_king_moves.append ((row_num+1, col_num+1))
 
         final_king_moves = []
@@ -618,7 +618,7 @@ class WorldModel:
                         king_position = (row, col)
                         break
             for move in enemy_possible_moves:
-                if king_position == move.end:
+                if king_position == move.end and not (self.board[move.start[0]][move.start[1]].piece == Piece.pawn and move.start[1]-move.end[1] == 0):
                     threats.append (move.start)
 
             if len (threats) == 1:
