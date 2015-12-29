@@ -18,13 +18,19 @@ class Manager:
         self.conn.start_server(5000)
         while len(self.conn.clients) < 2:
             sleep(1)
+
         white_team_name = self.conn.recv(0, 32)
-        self.conn.send(0, b'white')
+        self.conn.send(0, b'1')
+
         black_team_name = self.conn.recv(1, 32)
-        self.conn.send(1, b'black')
+        self.conn.send(1, b'0')
+
+        self.conn.send(0, black_team_name)
+        self.conn.send(1, white_team_name)
+
         self.conn.set_all_timeouts(5)
 
-        self.wm.init(white_team_name, black_team_name)
+        self.wm.init(white_team_name.decode(), black_team_name.decode())
 
 
     def run(self):
