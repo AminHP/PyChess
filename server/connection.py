@@ -34,7 +34,10 @@ class Connection:
 
 
     def send(self, client_index, msg):
-        return self.clients[client_index].send(msg)
+        try:
+            return self.clients[client_index].send(msg)
+        except:
+            return None
 
     def send_by_thread(self, client_index, msg):
         thread.start_new_thread(self.send, (client_index, msg, ))
