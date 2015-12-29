@@ -107,8 +107,8 @@ class WorldModel:
                                         break
                                     else:
                                         break                                    
-                            #knight
-                            if part.piece == Piece.knight:
+                            #bishop
+                            if part.piece == Piece.bishop:
                                 c = 1
                                 while row_num - c >= 0 and col_num - c >= 0:
                                     if self.board [row_num-c][col_num-c].piece == Piece.none:
@@ -152,8 +152,8 @@ class WorldModel:
                                     else:
                                         break
                                 
-                            #bishop
-                            if part.piece == Piece.bishop:
+                            #knight
+                            if part.piece == Piece.knight:
                                 if row_num >=2:
                                     if col_num<=6:
                                         if self.board [row_num-2][col_num+1].piece == Piece.none or self.board [row_num-2][col_num+1].piece != Piece.none and not self.board [row_num-2][col_num+1].is_white:
@@ -177,13 +177,13 @@ class WorldModel:
                                             moves.append(Move((row_num, col_num), (row_num+2,col_num-1)))
                                 if row_num <=6:
                                     if col_num<=5:
-                                        if self.board [row_num+2][col_num+1].piece == Piece.none or self.board [row_num+2][col_num+1].piece != Piece.none and not self.board [row_num+2][col_num+1].is_white:
+                                        if self.board [row_num+1][col_num+2].piece == Piece.none or self.board [row_num+1][col_num+2].piece != Piece.none and not self.board [row_num+1][col_num+2].is_white:
                                             moves.append(Move((row_num, col_num), (row_num+1,col_num+2)))
                                     if col_num>=2:
                                         if self.board [row_num+1][col_num-2].piece == Piece.none or self.board [row_num+1][col_num-2].piece != Piece.none and not self.board [row_num+1][col_num-2].is_white:
                                             moves.append(Move((row_num, col_num), (row_num+1,col_num-2)))
                             #queen
-                            if part.piece == Piece.rook:
+                            if part.piece == Piece.queen:
                                 c = 1
                                 while row_num - c >= 0:
                                     if self.board [row_num-c][col_num].piece == Piece.none:
@@ -224,7 +224,7 @@ class WorldModel:
                                         break
                                     else:
                                         break                                    
-                            if part.piece == Piece.knight:
+                            if part.piece == Piece.bishop:
                                 c = 1
                                 while row_num - c >= 0 and col_num - c >= 0:
                                     if self.board [row_num-c][col_num-c].piece == Piece.none:
@@ -287,6 +287,7 @@ class WorldModel:
                                         moves.append (Move((row_num, col_num), (row_num+2, col_num)))
                             #rook
                             if part.piece == Piece.rook:
+                                print (row_num, col_num, 'black rook')
                                 c = 1
                                 while row_num - c >= 0:
                                     if self.board [row_num-c][col_num].piece == Piece.none:
@@ -297,11 +298,12 @@ class WorldModel:
                                         break
                                     else:
                                         break
-                                c = 1
+                                c = 1                                
                                 while row_num + c <= 7: 
                                     if self.board [row_num+c][col_num].piece == Piece.none:
                                         moves.append (Move((row_num, col_num), (row_num+c, col_num)))
                                         c = c+1
+                                        
                                     elif self.board [row_num+c][col_num].is_white:
                                         moves.append (Move((row_num, col_num), (row_num+c, col_num)))
                                         break
@@ -327,8 +329,8 @@ class WorldModel:
                                         break
                                     else:
                                         break                                    
-                            #knight
-                            if part.piece == Piece.knight:
+                            #bishop
+                            if part.piece == Piece.bishop:
                                 c = 1
                                 while row_num - c >= 0 and col_num - c >= 0:
                                     if self.board [row_num-c][col_num-c].piece == Piece.none:
@@ -372,8 +374,8 @@ class WorldModel:
                                     else:
                                         break
                                 
-                            #bishop
-                            if part.piece == Piece.bishop:
+                            #knight
+                            if part.piece == Piece.knight:
                                 if row_num >=2:
                                     if col_num<=6:
                                         if self.board [row_num-2][col_num+1].piece == Piece.none or self.board [row_num-2][col_num+1].piece != Piece.none and self.board [row_num-2][col_num+1].is_white:
@@ -397,13 +399,13 @@ class WorldModel:
                                             moves.append(Move((row_num, col_num), (row_num+2,col_num-1)))
                                 if row_num <=6:
                                     if col_num<=5:
-                                        if self.board [row_num+2][col_num+1].piece == Piece.none or self.board [row_num+2][col_num+1].piece != Piece.none and self.board [row_num+2][col_num+1].is_white:
+                                        if self.board [row_num+1][col_num+2].piece == Piece.none or self.board [row_num+1][col_num+2].piece != Piece.none and self.board [row_num+1][col_num+2].is_white:
                                             moves.append(Move((row_num, col_num), (row_num+1,col_num+2)))
                                     if col_num>=2:
                                         if self.board [row_num+1][col_num-2].piece == Piece.none or self.board [row_num+1][col_num-2].piece != Piece.none and self.board [row_num+1][col_num-2].is_white:
                                             moves.append(Move((row_num, col_num), (row_num+1,col_num-2)))
                             #queen
-                            if part.piece == Piece.rook:
+                            if part.piece == Piece.queen:
                                 c = 1
                                 while row_num - c >= 0:
                                     if self.board [row_num-c][col_num].piece == Piece.none:
@@ -444,7 +446,7 @@ class WorldModel:
                                         break
                                     else:
                                         break                                    
-                            if part.piece == Piece.knight:
+                            if part.piece == Piece.bishop:
                                 c = 1
                                 while row_num - c >= 0 and col_num - c >= 0:
                                     if self.board [row_num-c][col_num-c].piece == Piece.none:
@@ -589,8 +591,8 @@ class WorldModel:
                         final_king_moves.append (Move((black_position[0], black_position[1]), tup))
             return final_king_moves
 
-        return get_not_king_moves(is_white) + get_king_moves(is_white)                            
-
+        #return get_not_king_moves(is_white) + get_king_moves(is_white)                            
+        return get_not_king_moves(is_white)
 
     def check_move(self, move, is_white):
         for m in self.all_moves (is_white):
@@ -626,3 +628,12 @@ class WorldModel:
     def is_mate(self, is_white):
         return False
 
+
+
+c = WorldModel()
+c.init('white', 'black')
+c.do_move(Move((1, 0), (3, 0)), False)
+moves = c.all_moves(False)
+for i in moves:
+    print (i.start , " ->", i.end)
+print (len(moves))
