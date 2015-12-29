@@ -14,6 +14,12 @@ class Connection:
         self.start_accept_thread()
 
 
+    def disconnect(self):
+        for c in self.clients:
+            c.close()
+        self.sock.close()
+
+
     def set_all_timeouts(self, timeout=10):
         for client in self.clients:
             client.settimeout(timeout)

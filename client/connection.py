@@ -10,6 +10,10 @@ class Connection:
         self.sock.connect((host, port))
 
 
+    def disconnect(self):
+        self.sock.close()
+
+
     def recv(self, recv_size):
         msg = self.sock.recv(recv_size)
         return msg
