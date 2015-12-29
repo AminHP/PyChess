@@ -15,7 +15,7 @@ class Manager:
 
 
     def init(self):
-        self.conn.start_server(5000)
+        self.conn.start_server()
         while len(self.conn.clients) < 2:
             sleep(1)
 
@@ -34,6 +34,8 @@ class Manager:
 
 
     def run(self):
+        sleep(3)
+
         turn = 1
         while True:
             is_white = bool(turn % 2)
@@ -59,4 +61,5 @@ class Manager:
             self.conn.send2all(Parser.encode(turn, final_move))
             turn += 1
             print (self.wm)
+            sleep(1)
 
